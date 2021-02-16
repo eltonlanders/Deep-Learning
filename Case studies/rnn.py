@@ -11,7 +11,7 @@ import pandas as pd
 
 # Importing the training set
 dataset_train = pd.read_csv('Google_Stock_Price_Train.csv')
-training_set = dataset_train.iloc[:, 1:2].values   #we use 1:2 only for selecting column 1 but in the form of a numpy array not as a vector
+training_set = dataset_train.iloc[:, 1:2].values 
 
 # Feature Scaling
 from sklearn.preprocessing import MinMaxScaler   #normalisation instead of standardisation for an RNN when it has sigmoid function in the output layer
@@ -23,7 +23,7 @@ X_train = []   #for every financial day, this will contain the 60 previous finan
 y_train = []   #this will contain the next financial day data
 for i in range(60, 1258):   # i-60 is the first i value 
     X_train.append(training_set_scaled[i-60:i, 0])   #first i will be 60 and it will append all the stock prices till 60 i.e. 59 as upper bound is excluded
-    y_train.append(training_set_scaled[i, 0])   #not i+1 coz python index starts at 0
+    y_train.append(training_set_scaled[i, 0]) 
 X_train, y_train = np.array(X_train), np.array(y_train)
 
 # Reshaping
@@ -41,7 +41,7 @@ from keras.layers import LSTM
 from keras.layers import Dropout
 
 # Initialising the RNN
-regressor = Sequential()   #creating a sequential layers model. We call it regressor coz it is a regression problem and not a classification one
+regressor = Sequential() 
 
 # Adding the first LSTM layer and some Dropout regularisation   #dropout layer is added to avoid overfitting
 regressor.add(LSTM(units = 50, return_sequences = True, input_shape = (X_train.shape[1], 1)))   #units are LSTM units or neurons, here 50 units in the 1st LSTM layers and so on. Return_seq is True coz we are adding more LSTM layers(on the last one we will set it to False)
@@ -82,7 +82,7 @@ dataset_total = pd.concat((dataset_train['Open'], dataset_test['Open']), axis = 
 inputs = dataset_total[len(dataset_total) - len(dataset_test) - 60:].values   #these are the inputs we need to predict the stock price of jan 2017.
 #Here len(dataset_total) - len(dataset_test) - 60 gives the first financial day of jan i.e. 3rd and a colon is added to get the second last day i.e. is the upper bound coz we need the previous 60 days till here to predict the last day
 inputs = inputs.reshape(-1,1)
-inputs = sc.transform(inputs)   #only transform 
+inputs = sc.transform(inputs) 
 X_test = []
 for i in range(60, 80):   #20 test data and 60 previous days data
     X_test.append(inputs[i-60:i, 0])   #inputs scaled
@@ -103,17 +103,7 @@ plt.show()
 """
 There are 20 days in a financial month(sat-sun not included)
 
-In X-train the first line corresponds to i=60 
-The second line has the 61st day data and so on
-
 Here a stacked LSTM model is built which is robust and has a lot of layers
 
-If the loss is too small then it may be overfitting the training data
-
-For testing and predicting, we need previous data from training as well the test set as test also contains some previous data
-We cannot do this on X_test set coz it should not be scaled as the training
-But the data(datasets) has to be scaled bcoz the RNN is trained on the scaled data
-
-The 3D format should be applied not only to the training data but also to the inputs applied to get the predictions
 
 """
