@@ -1,7 +1,6 @@
 # Recurrent Neural Network
 
 
-
 # Part 1 - Data Preprocessing
 
 # Importing the libraries
@@ -29,7 +28,6 @@ X_train, y_train = np.array(X_train), np.array(y_train)
 # Reshaping
 X_train = np.reshape(X_train, (X_train.shape[0], X_train.shape[1], 1))   #shape[0] and [1] gives the # of observations and the columns respectively. This is a 3D tensor which has first dimension as the # of stock prices and then the # of timestamps and finaaly a new diension
 #which is called the indicators which gives the additional # of indicators of the stock price  
-
 
 
 # Part 2 - Building the RNN
@@ -68,7 +66,6 @@ regressor.compile(optimizer = 'adam', loss = 'mean_squared_error')   #can use RM
 
 # Fitting the RNN to the Training set
 regressor.fit(X_train, y_train, epochs = 100, batch_size = 32)   #instead of updating the weights for every observation here it will be done on the batch size of 32
-
 
 
 # Part 3 - Making the predictions and visualising the results
